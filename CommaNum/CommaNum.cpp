@@ -10,6 +10,9 @@
 #include <Shellapi.h>
 #include <Commctrl.h>
 
+#define CHECK_MIN false
+#define MIN_NUMBER 0
+
 // Global Variables:
 HWND hWnd;
 HINSTANCE hInst;								// current instance
@@ -280,7 +283,9 @@ void ClipToUnique(UINT frm)
 			bool first=true;
 			for(int i=0; i<=cur; i++)
 			{
-				if(arr[i] < 10000 || arr[i] == prev)
+				if(CHECK_MIN && arr[i] < MIN_NUMBER)
+					continue;
+				if(arr[i] == prev)
 					continue;
 				prev=arr[i];
 				if(!first)
@@ -350,7 +355,9 @@ LPSTR ArrToUnique(int *arr, int count, bool dies=false)
 	bool first=true;
 	for(int i=0; i<count; i++)
 	{
-		if(arr[i] < 10000 || arr[i] == prev)
+		if(CHECK_MIN && arr[i] < MIN_NUMBER)
+			continue;
+		if(arr[i] == prev)
 			continue;
 		prev=arr[i];
 		if(!first)
@@ -402,7 +409,9 @@ LPSTR GetUnique(LPSTR text)
 	bool first=true;
 	for(int i=0; i<count; i++)
 	{
-		if(arr[i] < 10000 || arr[i] == prev)
+		if(CHECK_MIN && arr[i] < MIN_NUMBER)
+			continue;
+		if(arr[i] == prev)
 			continue;
 		prev=arr[i];
 		if(!first)
@@ -723,8 +732,6 @@ void MakeSimpleText(void)
 
 void DoIt(void)
 {
-	HGLOBAL   hglb; 
-	LPSTR    lpstr; 
 	UINT getfrm=CF_TEXT;
 
 	if (!IsClipboardFormatAvailable(CF_TEXT)) 
@@ -732,49 +739,7 @@ void DoIt(void)
 		if (!IsClipboardFormatAvailable(CF_CSV)) 
 			return;
 		getfrm=CF_CSV;
-		/*
-		if (!OpenClipboard(hWnd)) 
-			return; 
-		hglb = GetClipboardData(CF_CSV); 
-		if (hglb != NULL) 
-		{ 
-			lpstr = (LPSTR)GlobalLock(hglb); 
-			if (lpstr != NULL) 
-			{ 
-				int len = strlen(lpstr);
-				HGLOBAL   hnew = GlobalAlloc(GMEM_MOVEABLE, len+1);
-				LPSTR glbuf = (LPSTR)GlobalLock(hnew);
-				strcpy(glbuf,lpstr);
-				GlobalUnlock(hnew);
-				GlobalUnlock(hglb); 
-				EmptyClipboard();
-				SetClipboardData(CF_TEXT,hnew);
-				HGLOBAL   hloc = GlobalAlloc(GMEM_MOVEABLE, sizeof(LCID));
-				LCID *ploc = (LCID *)GlobalLock(hloc);
-				*ploc=1049; // LOCALE_USER_DEFAULT
-				GlobalUnlock(hloc);
-				SetClipboardData(CF_LOCALE,hloc);
-			} 
-		} 
-		CloseClipboard(); 
-
-		return; 
-		*/
-		/*
-		if (!OpenClipboard(hWnd)) 
-			return; 
-		UINT res=0;
-		LPSTR format=(LPSTR)malloc(1024);
-		while(res=EnumClipboardFormats(res))
-		{
-			GetClipboardFormatNameA(res, format, 1024);
-		}
-		free(format);
-		CloseClipboard();
-		return; 
-		*/
 	}
-	//ClipToList(getfrm);
 	ClipToUnique(getfrm);
 	return; 
 }
@@ -1428,7 +1393,9 @@ void MakeColumnList(void)
 		bool first=true;
 		for(int i=0; i<count; i++)
 		{
-			if(arr[i] < 10000 || arr[i] == prev)
+			if(CHECK_MIN && arr[i] < MIN_NUMBER)
+				continue;
+			if(arr[i] == prev)
 				continue;
 			addline(&html,"<tr><td valign='top'>");
 			char dest[20];

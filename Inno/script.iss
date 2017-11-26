@@ -7,14 +7,14 @@
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
 AppId={{6E193DC4-38CB-4474-B379-EEBFA445509C}
 AppName=CommaNum
-AppVersion=1.2
+AppVersion=1.3
 ;AppVerName=CommaNum 1.1
 AppPublisher=Sergey Shmakov
 DefaultDirName={pf}\CommaNum
 DefaultGroupName=CommaNum
 AllowNoIcons=yes
 OutputDir=.
-OutputBaseFilename=CommaNum_setup_1.2
+OutputBaseFilename=CommaNum_setup_1.3
 Compression=lzma
 SolidCompression=yes
 
